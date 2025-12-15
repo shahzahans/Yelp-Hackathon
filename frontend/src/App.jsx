@@ -1,39 +1,52 @@
 import React, { useState } from "react";
-import { Routes, Route, Link, useNavigate } from "react-router-dom";
-import "./index.css";
+import { Routes, Route, useNavigate } from "react-router-dom";
 
 const sampleRecommendations = [
-  // placeholder
+  // placeholder - later we’ll replace with backend results
 ];
 
 const sampleQuests = [
   { title: "Exploring Seattle", progress: "3 / 7 spots", tag: "City" },
   { title: "A Week in Japan", progress: "1 / 5 bowls", tag: "Cuisine" },
-  { title: "Hidden Gems", progress: "0 / 6 bites", tag: "Small Biz" }
+  { title: "Hidden Gems", progress: "0 / 6 bites", tag: "Small Biz" },
 ];
 
 const sampleBadges = [
   { label: "Night Owl", detail: "Late-night eats" },
   { label: "Noodle Hero", detail: "Ramen lover" },
-  { label: "Local Legend", detail: "Supports small biz" }
+  { label: "Local Legend", detail: "Supports small biz" },
 ];
 
 function LandingPage() {
   const navigate = useNavigate();
+
   return (
     <div className="page page--landing">
       <nav className="topbar-landing">
-        <div className="logo" onClick={() => navigate("/")}>QuestEats</div>
+        <div className="logo" onClick={() => navigate("/")}>
+          QuestEats
+        </div>
       </nav>
 
       <header className="title">
         <div className="hero-left">
-          <h1>Turn Every Meal Into An <span class="highlight">Adventure</span></h1>
+          <h1>
+            Turn Every Meal Into An{" "}
+            <span className="highlight">Adventure</span>
+          </h1>
+
           <p className="subtitle">
-            Stop stressing about where to eat. Let AI match your mood <br></br>with the perfect local spot and earn rewards along the way.
+            Stop stressing about where to eat. Let AI match your mood <br />
+            with the perfect local spot and earn rewards along the way.
           </p>
+
           <div className="cta-row">
-            <button onClick={() => navigate("/dashboard")} class="get-started-button">Get started</button>
+            <button
+              onClick={() => navigate("/dashboard")}
+              className="get-started-button"
+            >
+              Get started
+            </button>
           </div>
         </div>
       </header>
@@ -46,11 +59,13 @@ function LandingPage() {
             <h3>Share your mood</h3>
             <p>Tell us the vibe: cozy noodles, neon tacos, brunch with friends.</p>
           </article>
+
           <article className="step">
             <div className="step__icon">2</div>
             <h3>Get matched</h3>
             <p>Yelp AI pairs you with a balanced list of nearby spots.</p>
           </article>
+
           <article className="step">
             <div className="step__icon">3</div>
             <h3>Earn rewards</h3>
@@ -78,14 +93,19 @@ function DashboardPage() {
   return (
     <div className="page">
       <nav className="topbar-dashboard">
-        <div className="logo" onClick={() => navigate("/")}>QuestEats</div>
+        <div className="logo" onClick={() => navigate("/")}>
+          QuestEats
+        </div>
       </nav>
+
       <header className="hero">
         <div className="hero__content">
           <h1>What's Your Vibe?</h1>
           <p className="lede">
-            Describe your mood, get AI-picked restaurants near you, and collect badges as you clear themed quests.
+            Describe your mood, get AI-picked restaurants near you, and collect
+            badges as you clear themed quests.
           </p>
+
           <form className="mood-form" onSubmit={handleSearch}>
             <div className="field">
               <label>Mood or craving</label>
@@ -96,6 +116,7 @@ function DashboardPage() {
                 required
               />
             </div>
+
             <div className="field">
               <label>Location</label>
               <input
@@ -104,6 +125,7 @@ function DashboardPage() {
                 placeholder="Use city or allow geolocation"
               />
             </div>
+
             <button type="submit">Find my spots</button>
           </form>
         </div>
@@ -117,6 +139,7 @@ function DashboardPage() {
             </div>
             <button className="ghost">Generate with AI</button>
           </div>
+
           <div className="quests">
             {sampleQuests.map((q) => (
               <article className="quest" key={q.title}>
@@ -138,6 +161,7 @@ function DashboardPage() {
             </div>
             <button className="ghost">View profile</button>
           </div>
+
           <div className="badges">
             {sampleBadges.map((b) => (
               <div className="badge" key={b.label}>
