@@ -79,7 +79,7 @@ https://yelp-hackathon-steel.vercel.app/
 
 ---
 
-## ⚙️ Environment Variables
+## Environment Variables
 
 ### Backend (Render)
 PORT=4000
