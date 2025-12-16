@@ -1,41 +1,24 @@
-import express from "express";
-import cors from "cors";
+import dotenv from "dotenv";
+dotenv.config();
 
-import questRoutes from "./routes/questRoutes.js";
-import userRoutes from "./routes/userRoutes.js";
-import badgeRoutes from "./routes/badgeRoutes.js";
-import aiRoutes from "./routes/aiRoutes.js";
+import { connectDB } from "./config/db.js";
+import app from "./app.js";
 
-const app = express();
+const PORT = process.env.PORT || 4000;
 
-// CORS: supports localhost + ANY Vercel subdomain
-app.use(cors({
-  origin: (origin, callback) => {
-    if (
-      !origin ||
-      origin === "http://localhost:5173" ||
-      origin.endsWith(".vercel.app")
-    ) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
-  credentials: true
-}));
+const startServer = async () => {
+  try {
+    console.log("Starting server...");
+    await connectDB();
+    console.log("MongoDB connected");
 
-// must be before routes
-app.use(express.json());
+    app.listen(PORT, () => {
+      console.log(`QuestEats backend running on port ${PORT}`);
+    });
+  } catch (err) {
+    console.error("Startup error:", err);
+    process.exit(1);
+  }
+};
 
-// health check
-app.get("/api/health", (req, res) => {
-  res.json({ ok: true });
-});
-
-// routes
-app.use("/api/quests", questRoutes);
-app.use("/api/users", userRoutes);
-app.use("/api/badges", badgeRoutes);
-app.use("/api/ai", aiRoutes);
-
-export default app;
+startServer();
