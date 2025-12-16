@@ -1,5 +1,6 @@
 // API service layer for QuestEats backend
-const API_BASE_URL = "http://localhost:4000/api";
+const API_BASE_URL = `${import.meta.env.VITE_API_URL}/api`;
+
 
 // Demo user ID (in production, this would come from auth)
 const DEMO_USER_ID = "6940197e276a67b1c6b74b69";
