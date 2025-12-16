@@ -36,26 +36,26 @@ QuestEATS reframes food discovery as an adventure rather than a decision.
 ---
 
 ## Project Structure
+```text
 QuestEATS/
+├─ backend/                 # Node.js + Express API
+│  ├─ config/               # Database configuration
+│  ├─ controllers/          # API route handlers
+│  ├─ models/               # MongoDB schemas
+│  ├─ routes/               # Express routes
+│  ├─ services/             # Yelp + AI integrations
+│  ├─ app.js                # Express app setup
+│  └─ server.js             # Server entry point
 │
-├── backend/ # Node.js + Express API
-│ ├── controllers/ # API route handlers
-│ ├── models/ # MongoDB schemas
-│ ├── routes/ # Express routes
-│ ├── services/ # Yelp + AI integrations
-│ ├── config/ # Database configuration
-│ ├── app.js # Express app setup
-│ └── server.js # Server entry point
+├─ frontend/                # React + Vite frontend
+│  ├─ src/
+│  │  ├─ App.jsx            # Main app with routing
+│  │  ├─ api.js             # Backend API client
+│  │  └─ main.jsx           # React entry point
+│  └─ package.json
 │
-├── frontend/ # React + Vite frontend
-│ ├── src/
-│ │ ├── App.jsx # Main app with routing
-│ │ ├── api.js # Backend API client
-│ │ └── main.jsx # React entry point
-│ └── package.json
-│
-└── README.md
-
+└─ README.md
+```
 
 ---
 
