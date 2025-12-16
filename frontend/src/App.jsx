@@ -214,67 +214,103 @@ function DashboardPage() {
           )}
 
           {aiResponse && (
-            <div style={{ marginTop: "1.5rem", padding: "1rem", background: "#f8f9fa", borderRadius: "8px" }}>
-              <p style={{ margin: 0, lineHeight: 1.6 }}>{aiResponse}</p>
+            <div className="aiResponse">
+              <p className="aiResponse__text">{aiResponse}</p>
             </div>
           )}
+          <div className="results-panel">
+            <div className="results-head">
+              <div>
+                <p className="pill pill--muted" style={{ margin: 0 }}>Recommended</p>
+                <h3 style={{ margin: "6px 0 4px" }}>Recommended Restaurants</h3>
+                <p className="meta">Curated by AI from your vibe and location.</p>
+              </div>
+              {location && (
+                <p className="meta" style={{ margin: 0, fontWeight: 700 }}>
+                  {location}
+                </p>
+              )}
+            </div>
 
-          {restaurants.length > 0 && (
-            <div style={{ marginTop: "2rem" }}>
-              <h3>Recommended Restaurants</h3>
-              <div style={{ display: "grid", gap: "1rem", marginTop: "1rem" }}>
-                {restaurants.map((restaurant) => (
-                  <div
-                    key={restaurant.id}
-                    style={{
-                      background: "#fff",
-                      padding: "1rem",
-                      borderRadius: "8px",
-                      border: "1px solid #e0e0e0",
-                    }}
-                  >
-                    <div style={{ display: "flex", gap: "1rem", alignItems: "start" }}>
-                      {restaurant.image_url && (
-                        <img
-                          src={restaurant.image_url}
-                          alt={restaurant.name}
-                          style={{
-                            width: "100px",
-                            height: "100px",
-                            objectFit: "cover",
-                            borderRadius: "8px",
-                          }}
-                        />
-                      )}
-                      <div style={{ flex: 1 }}>
-                        <h4 style={{ margin: "0 0 0.5rem 0" }}>
-                          {restaurant.name}
-                        </h4>
-                        <p style={{ margin: "0 0 0.5rem 0", color: "#666", fontSize: "0.9rem" }}>
-                          {restaurant.location?.formatted_address || restaurant.location?.display_address?.join(", ")}
-                        </p>
-                        <div style={{ display: "flex", gap: "1rem", fontSize: "0.85rem", color: "#666" }}>
-                          <span>⭐ {restaurant.rating || "N/A"}</span>
-                          <span>{restaurant.price || ""}</span>
-                          <span>{restaurant.categories?.[0]?.title}</span>
-                        </div>
-                        {restaurant.url && (
-                          <a
-                            href={restaurant.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            style={{ fontSize: "0.85rem", marginTop: "0.5rem", display: "inline-block" }}
-                          >
-                            View on Yelp →
-                          </a>
-                        )}
+            {loading && (
+              <div className="results-grid">
+                {[1, 2, 3].map((idx) => (
+                  <div className="result-card result-card--skeleton" key={idx}>
+                    <div className="result-media skeleton-block" />
+                    <div className="result-body">
+                      <div className="skeleton-line w-60" />
+                      <div className="skeleton-line w-40" />
+                      <div className="skeleton-tags">
+                        <span className="skeleton-pill" />
+                        <span className="skeleton-pill" />
                       </div>
                     </div>
                   </div>
                 ))}
               </div>
-            </div>
-          )}
+            )}
+
+            {!loading && restaurants.length === 0 && (
+              <div className="results-empty">
+                <p className="meta">Run a search to see AI-picked spots here.</p>
+                <div className="tips">
+                  <span className="pill pill--peach">Try: cozy ramen in Seattle</span>
+                  <span className="pill pill--peach">Use a neighborhood</span>
+                  <span className="pill pill--peach">Add a cuisine + vibe</span>
+                </div>
+              </div>
+            )}
+
+            {!loading && restaurants.length > 0 && (
+              <div className="results-grid">
+                {restaurants.map((restaurant) => {
+                  const address =
+                    restaurant.location?.formatted_address ||
+                    restaurant.location?.display_address?.join(", ") ||
+                    restaurant.address ||
+                    "Address unavailable";
+                  const category = restaurant.categories?.[0]?.title;
+                  const rating = restaurant.rating || "New";
+                  const price = restaurant.price || "";
+                  const image = restaurant.image_url;
+                  const fallback = restaurant.name ? restaurant.name.charAt(0) : "Q";
+
+                  return (
+                    <article className="result-card" key={restaurant.id || restaurant.url}>
+                      <div className="result-body">
+                        <div className="result-header">
+                          <h4>{restaurant.name}</h4>
+                          <div className="result-badges">
+                            <span className="badge-chip">★ {rating}</span>
+                            {price && <span className="badge-chip badge-chip--muted">{price}</span>}
+                          </div>
+                        </div>
+                        <p className="result-meta">{address}</p>
+                        <div className="result-tags">
+                          {category && <span className="pill pill--muted">{category}</span>}
+                          {restaurant.distance && (
+                            <span className="pill pill--muted">
+                              {(restaurant.distance / 1000).toFixed(1)} km away
+                            </span>
+                          )}
+                        </div>
+                        {restaurant.url && (
+                          <a
+                            className="ghost result-link"
+                            href={restaurant.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            View on Yelp
+                          </a>
+                        )}
+                      </div>
+                    </article>
+                  );
+                })}
+              </div>
+            )}
+          </div>
         </div>
       </header>
 
@@ -735,7 +771,7 @@ function ProfilePage() {
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "start" }}>
                     <div>
                       <h3 style={{ margin: "0 0 0.5rem 0" }}>
-                        Quest #{idx + 1}
+                        Quest: {qp.quest.title}
                       </h3>
                       <p style={{ margin: 0, color: "#666", fontSize: "0.9rem" }}>
                         Status: <span style={{ textTransform: "capitalize", fontWeight: "bold" }}>
@@ -744,6 +780,9 @@ function ProfilePage() {
                       </p>
                       <p style={{ margin: "0.25rem 0 0 0", color: "#666", fontSize: "0.9rem" }}>
                         Steps completed: {qp.completedSteps?.length || 0}
+                      </p>
+                      <p style={{ margin: "0.25rem 0 0 0", color: "#666", fontSize: "0.9rem" }}>
+                        Started: {qp.startedAt.substring(0,10)}
                       </p>
                     </div>
                   </div>
@@ -768,3 +807,5 @@ export default function App() {
     </Routes>
   );
 }
+
+
