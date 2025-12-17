@@ -97,6 +97,8 @@ button.ghost, .ghost { background: #fff; color: #1f2937; box-shadow: none; borde
   white-space: normal;
   word-break: break-word;
   overflow-wrap: anywhere;
+  text-wrap: wrap;
+  max-width: 60%;
 }
 
 /* Landing page extras */
