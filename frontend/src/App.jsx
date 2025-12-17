@@ -2,6 +2,14 @@ import React, { useState, useEffect } from "react";
 import { Routes, Route, useNavigate, useParams } from "react-router-dom";
 import { ai, quests, badges, users, DEMO_USER_ID } from "./api";
 
+// Deterministic icon picker so each badge gets a consistent generic symbol
+const BADGE_ICON_POOL = ["⭐", "🏅", "🎯", "🛡️", "🚀", "🎉", "🧭", "⚡", "💫", "🔆"];
+const getBadgeIcon = (badge) => {
+  const seedSource = badge?._id || badge?.name || "badge";
+  const seed = seedSource.split("").reduce((acc, ch) => (acc << 5) - acc + ch.charCodeAt(0), 0);
+  return BADGE_ICON_POOL[Math.abs(seed) % BADGE_ICON_POOL.length];
+};
+
 // ==================== Landing Page ====================
 function LandingPage() {
   const navigate = useNavigate();
@@ -376,7 +384,9 @@ function DashboardPage() {
             ) : (
               badgesList.map((badge) => (
                 <div className="badge" key={badge._id}>
-                  <div className="badge__icon" />
+                  <div className="badge__icon" aria-hidden="true">
+                    {badge.icon || getBadgeIcon(badge)}
+                  </div>
                   <div>
                     <p className="title">{badge.name}</p>
                     <p className="meta">{badge.description}</p>
@@ -807,5 +817,3 @@ export default function App() {
     </Routes>
   );
 }
-
-
