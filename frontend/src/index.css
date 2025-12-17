@@ -93,6 +93,11 @@ button.ghost, .ghost { background: #fff; color: #1f2937; box-shadow: none; borde
   justify-content: center;
   font-weight: 800;
 }
+.badge .meta {
+  white-space: normal;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
 
 /* Landing page extras */
 .blob { position: absolute; inset: 0; border-radius: 28px; background: radial-gradient(circle at 30% 30%, rgba(255, 179, 143, 0.7), rgba(255, 122, 89, 0.6)); filter: blur(28px); opacity: 0.6; }
